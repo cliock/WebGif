@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-3.5.0.min.js"></script>
+    <script src="js/libgif.js"></script>
+    <script src="js/gif.js"></script>
+</head>
+<style>
+    #gifBox {
+        width: 200px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        background: #ccc;
+    }
+</style>
+<body>
+<img id="gifDemo" src="./img/1.gif" rel:animated_src="./img/1.gif"
+     width="360" height="360" rel:auto_play="1" rel:rubbable="1"/>
+
+<div id="gifBox" onclick="toGif()">生成</div>
+
+<img id="gifTest" src="" alt="">
+
+<script type="text/javascript">
+    var rub = null;
+    $('#gifDemo').each(function (img_tag) {
+        if (/.*\.gif/.test($('img')[img_tag].src)) {
+            rub = new SuperGif({gif: $('img')[img_tag]});
+            rub.load(function () {
+                console.log('oh hey, now the gif is loaded');
+            });
+        }
+    });
+
+
+    // or a canvas element
+    function toGif () {
+        var gifImg = new GIF({
+            workers: 2,
+            quality: 0
+        });
+
+        var canvasTest = document.getElementsByTagName('canvas')[0]
+        var ctx = canvasTest.getContext('2d')
+
+        var data = rub.get_canvas_data()
+
+        for (var i = 0; i < data.length; i++) {
+            gifImg.addFrame(data[i]['data'], {delay: data[i]['delay'] * 10, copy: true});
+        }
+
+
+        gifImg.on('finished', function (blob) {
+            $('#gifTest').attr('src', URL.createObjectURL(blob))
+        });
+
+        gifImg.render();
+    }
+
+</script>
+</body>
+</html>
