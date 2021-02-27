@@ -369,8 +369,7 @@
             handler.img && handler.img(img);
         };
 
-        var parseBlock = function () {
-
+        var parseBlock = function (type) {
             var block = {};
             block.sentinel = st.readByte();
             switch (String.fromCharCode(block.sentinel)) { // For ease of matching
@@ -584,8 +583,11 @@
         var pushFrame = function () {
             if (!frame) return;
             // todo: 这里添加文字
-            frame.font = '10px Arial';
-            frame.fillText("京东方开始看的福建烤老鼠", 15, 30);
+            if (options.text) {
+                frame.font = (options.fontSize + 'px Arial') || '10px Arial';
+                frame.fillText(options.text, 15, 30);
+            }
+
             frames.push({
                 data: frame.getImageData(0, 0, hdr.width, hdr.height),
                 delay: delay
@@ -732,6 +734,7 @@
             }());
 
             var getCanvasData = function () {
+                // todo 生成gif
                 return frames
             }
 

@@ -5,7 +5,7 @@
     <title>Title</title>
     <script src="js/jquery-3.5.0.min.js"></script>
     <script src="js/libgif.js"></script>
-    <script src="js/gif.js"></script>
+    <!--    <script src="js/gif.js"></script>-->
 </head>
 <style>
     #gifBox {
@@ -22,22 +22,28 @@
 
 <div id="gifBox" onclick="toGif()">生成</div>
 
+<input class="inputTest" type="text" value="">
+
 <img id="gifTest" src="" alt="">
 
 <script type="text/javascript">
-    var rub = null;
-    $('#gifDemo').each(function (img_tag) {
-        if (/.*\.gif/.test($('img')[img_tag].src)) {
-            rub = new SuperGif({gif: $('img')[img_tag]});
-            rub.load(function () {
-                console.log('oh hey, now the gif is loaded');
-            });
-        }
-    });
-
-
     // or a canvas element
+    var rub = null;
+
+    // 添加字体生成gif
     function toGif () {
+        $('#gifDemo').each(function (img_tag) {
+            if (/.*\.gif/.test($('img')[img_tag].src)) {
+                rub = new SuperGif({gif: $('img')[img_tag], text: $('.inputTest').val(), fontSize: 20});
+                rub.load(function () {
+                    console.log('oh hey, now the gif is loaded');
+                });
+            }
+        });
+    }
+
+    // 将图片转成gif
+    function createGif () {
         var gifImg = new GIF({
             workers: 2,
             quality: 0
